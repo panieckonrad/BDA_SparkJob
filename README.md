@@ -1,18 +1,20 @@
 # Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+Project where we store our all spark jobs.  
 
 # Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+For now this simple repo don't require any external dependencies aprt from sbt.version=1.4.3
+Java 8 is required due to some Hadoop initialization problem with tests. (Tests on 16 were failing)
+
 
 # Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+To run unit tests it's enough to run sbt test. No local spark installation is required.
+
+To deploy build the package by sbt package and manually upload to the cluster (for now), 
+while creating new job. After providing the HelloWorldSpark name it should be runnable now!
+
 
 # Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+TODO: Explain how other users and developers can contribute to make your code better. Provide code guidelines 
 
 If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
 - [ASP.NET Core](https://github.com/aspnet/Home)
