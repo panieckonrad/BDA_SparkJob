@@ -13,10 +13,8 @@ To deploy build the package by sbt package and manually upload to the cluster (f
 while creating new job. After providing the HelloWorldSpark name it should be runnable now!
 
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. Provide code guidelines 
+# Code guidelines
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+This Spark project, follows the [Databricks Spark Scale Guide](https://github.com/databricks/scala-style-guide)
+
+The embedded .scalafmt.conf files triggers turns on Scalafmt in IntelliJ and provides reasonably close formatting.
