@@ -11,7 +11,14 @@ steps:
     sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2EE0EA64E40A89B84B2DF73499E82A75642AC823
     sudo apt-get update
     sudo apt-get install sbt -y
-  displayName: 'Install SBT.'
+  displayName: 'Install SBT'
+  env:
+    JAVA_HOME: $(JAVA_HOME_8_X64)
+    PATH: $(JAVA_HOME_8_X64)/bin:$(PATH)
+
+- script: |
+    sbt scalafmtCheck
+  displayName: 'Check formatting'
   env:
     JAVA_HOME: $(JAVA_HOME_8_X64)
     PATH: $(JAVA_HOME_8_X64)/bin:$(PATH)
@@ -19,8 +26,7 @@ steps:
 - script: |
     java -version
     sbt test
-  displayName: 'Test.'
+  displayName: 'Run tests'
   env:
     JAVA_HOME: $(JAVA_HOME_8_X64)
     PATH: $(JAVA_HOME_8_X64)/bin:$(PATH)
-
