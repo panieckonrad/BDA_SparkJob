@@ -23,7 +23,7 @@ steps:
     displayName: 'Show java and maven version'
 
   - script: |
-      mvn validate
+      mvn validate --no-transfer-progress
     displayName: 'Scalafmt formatting check'
 
   - task: Maven@3
@@ -35,5 +35,5 @@ steps:
       jdkArchitectureOption: 'x64'
       publishJUnitResults: true
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
-      goals: 'test'
+      goals: 'test --no-transfer-progress'
     displayName: 'Unit tests (mvn test)'
