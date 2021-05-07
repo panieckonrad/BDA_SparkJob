@@ -7,8 +7,8 @@ az cosmosdb sql database create --name asa --account-name forextestdb --resource
 az cosmosdb sql container create --account-name forextestdb --database-name asa --name output --partition-key-path /Instrument --resource-group BigDataAcademyMay2021
 
 # create test Azure Storage Table
-az storage table create --name forextesttbl --account-name forexstoragebda
+az storage table create --name asaoutput --account-name forexstoragebda
 # create read policy on Azure Storage Table
-az storage table policy create --name readpolicy --table-name forextesttbl --account-name forexstoragebda --permissions r
+az storage table policy create --name readpolicy --table-name asaoutput --account-name forexstoragebda --permissions r
 # create read and write policy on Azure Storage Table
-az storage table policy create --name managepolicy --table-name forextesttbl --account-name forexstoragebda --permissions raud
+az storage table policy create --name managepolicy --table-name asaoutput --account-name forexstoragebda --permissions raud
