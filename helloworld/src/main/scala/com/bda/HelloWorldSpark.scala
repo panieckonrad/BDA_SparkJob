@@ -1,9 +1,7 @@
+package com.bda
+
 import org.apache.spark.sql.{Row, SparkSession}
 
-/**
- * Test JavaDoc comment to ensure formatting works properly.
- * This is sample class to show how the Spark session can be started and used in the code.
- */
 object HelloWorldSpark {
 
   def main(args: Array[String]): Unit = {
@@ -15,9 +13,8 @@ object HelloWorldSpark {
   }
 
   def countStringsLongerThan3Chars(spark: SparkSession, input: Seq[String]): List[Row] = {
-    import spark.implicits._
-
     import org.apache.spark.sql.functions._
+    import spark.implicits._
     input
       .toDF("word")
       .select("word")

@@ -1,7 +1,9 @@
+package com.bda
+
 import org.apache.spark.sql.SparkSession
 import org.scalatest.{BeforeAndAfterEach, FunSuite}
 
-class HelloWordTests extends FunSuite with BeforeAndAfterEach {
+class HelloWorldTests extends FunSuite with BeforeAndAfterEach {
 
   var sparkSession: SparkSession = _
   override def beforeEach() {

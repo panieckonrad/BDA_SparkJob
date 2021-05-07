@@ -1,5 +1,6 @@
 *.class
 *.log
+*.iml
 .bsp
 .idea
 target/

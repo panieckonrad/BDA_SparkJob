@@ -2,15 +2,17 @@
 Project where we store our all spark jobs.  
 
 # Getting Started
-For now this simple repo don't require any external dependencies aprt from sbt.version=1.4.3
 Java 8 is required due to some Hadoop initialization problem with tests. (Tests on 16 were failing)
 
 
 # Build and Test
-To run unit tests it's enough to run sbt test. No local spark installation is required.
+To run unit tests it's enough to run mvn test. No local spark installation is required.
 
-To deploy build the package by sbt package and manually upload to the cluster (for now), 
-while creating new job. After providing the HelloWorldSpark name it should be runnable now!
+To build all the modules use command 'mvn package' and manually upload the chosen jar-with-dependencies from 
+the chosen {submodule}/target folder to the cluster while creating new job. 
+After providing the main class name (ex. com.bda.HelloWorldSpark) it should be runnable now!
+
+To build a submodule individually just run the command 'mvn package' inside a submodule directory.
 
 
 # Code guidelines
