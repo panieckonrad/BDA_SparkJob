@@ -10,6 +10,17 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
+
+  - task: SonarQubePrepare@4
+    inputs:
+      SonarQube: 'sonardeveloper'
+      scannerMode: 'Other'
+      extraProperties: |
+        # Additional properties that will be passed to the scanner,
+        # Put one key=value per line, example:
+        # sonar.exclusions=**/*.bin
+        sonar.projectKey=BigDataAcademy_SparkJobs
+
   - task: JavaToolInstaller@0
     inputs:
       versionSpec: '8'
@@ -26,9 +37,9 @@ steps:
       mvn validate --no-transfer-progress
     displayName: 'Scalafmt formatting check'
 
+  # Main Maven task
   - task: Maven@3
     inputs:
-      mavenPomFile: 'pom.xml'
       mavenOptions: '-Xmx3072m'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: '1.8'
@@ -37,3 +48,17 @@ steps:
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
       goals: 'test --no-transfer-progress'
     displayName: 'Unit tests (mvn test)'
+
+  # SonarQube Maven task
+  - task: Maven@3
+    inputs:
+      mavenVersionOption: 'Default'
+      mavenAuthenticateFeed: false
+      effectivePomSkip: false
+      sonarQubeRunAnalysis: true
+      sqMavenPluginVersionChoice: 'pom'
+    displayName: 'SonarQube (mvn sonar:sonar)'
+
+  - task: SonarQubePublish@4
+    inputs:
+      pollingTimeoutSec: '300'
