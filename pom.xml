@@ -153,6 +153,7 @@
     <modules>
         <module>helloworld</module>
         <module>dependencyjob</module>
+        <module>MockDataProducer</module>
     </modules>
 
 </project>

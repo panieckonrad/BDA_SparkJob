@@ -1,0 +1,5 @@
+key.serializer=org.apache.kafka.common.serialization.StringSerializer
+value.serializer=org.apache.kafka.common.serialization.StringSerializer
+sasl.mechanism=PLAIN
+security.protocol=SASL_SSL
+client.dns.lookup=use_all_dns_ips
