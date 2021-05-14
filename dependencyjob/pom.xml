@@ -8,7 +8,6 @@
         <version>0.2</version>
     </parent>
 
-    <groupId>com.bda</groupId>
     <artifactId>dependencyjob</artifactId>
     <version>0.2</version>
 
