@@ -14,9 +14,9 @@ class EventHubProducer(val topicName: String) {
     }
   }
 
-  def publishMessages(getProducer: () => Producer[String, String], verbose: Boolean = false): Unit = {
+  def publishMessages(getProducer: () => Producer[String, String], amount: Int = 1000, verbose: Boolean = false): Unit = {
     val producer = getProducer()
-    val messagesToSend = ForexDataReader.readJson("test_data.json")
+    val messagesToSend = ForexDataReader.readJson(amount)
 
     for (message <- messagesToSend) {
       if (verbose) {

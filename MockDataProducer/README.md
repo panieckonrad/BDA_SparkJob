@@ -14,4 +14,5 @@ CONNECTION_STRING=primaryConnectionStringValue`. In addition, you need to extrac
 With this value set new environment variable `BOOTSTRAP_SERVER`. Your command should look similar to `export 
 BOOTSTRAP_SERVER=dummynamespace.servicebus.windows.net:9093`
 
-After that ensure you are in MockDataProducer directory and type `mvn exec:java` in terminal.
+After that ensure you are in MockDataProducer directory and type `mvn exec:java -Dexec.args="x"` in terminal 
+to produce `x` messages.

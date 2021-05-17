@@ -5,11 +5,11 @@ import ujson.Value
 import java.io.InputStream
 
 object ForexDataReader {
-  def readJson(path: String): List[Value] = {
-    val stream: InputStream = getClass.getClassLoader.getResourceAsStream(path)
+  def readJson(amount: Int): List[Value] = {
+    val stream: InputStream = getClass.getClassLoader.getResourceAsStream("test_data.json")
     val fileContent: Iterator[String] = scala.io.Source.fromInputStream(stream).getLines
     val json = ujson.read(fileContent.mkString)
     stream.close()
-    json.arr.toList
+    json.arr.toList.take(amount)
   }
 }
