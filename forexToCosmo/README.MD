@@ -10,6 +10,8 @@ The arguments can be:
 `test`   ---> for deployment to test environment
 `prod`   ---> for deployment to production environment
 #Deployment
-If you want to submit the jar to the databricks cluster, you need to use the `forexToCosmo-0.2-shaded-jar-with-dependencies.jar`.
+If you want to submit the jar to the databricks cluster, you need to use the `forexToCosmo-{version}-shaded-jar-with-dependencies.jar`.
 To provide the arguments to jar on cluster use a parameter field ex. `["prod"]`
+
+The Spark version 3.x is not supported. 
 

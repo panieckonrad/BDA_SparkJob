@@ -12,6 +12,7 @@ az cosmosdb sql container create --account-name forextest --database-name ForexD
 # create container for stream analytics aggregated data inside CosmoDB database
 az cosmosdb sql container create --account-name forextestdb --database-name asa --name currencyExchangeRateOutput --partition-key-path /Instrument --resource-group BigDataAcademyMay2021
 
+az cosmosdb sql container create --account-name forextest --database-name ForexDB --name spark_messages --partition-key-path /Instrument --resource-group BigDataAcademyMay2021
 #AZURE STORAGE TABLE
 # create test Azure Storage account
 az storage account create --name forexteststoragebda --resource-group BigDataAcademyMay2021 --location UK South

@@ -5,11 +5,11 @@
     <parent>
         <artifactId>SparkJobs</artifactId>
         <groupId>com.bda</groupId>
-        <version>0.2</version>
+        <version>0.3</version>
     </parent>
 
     <artifactId>dependencyjob</artifactId>
-    <version>0.2</version>
+    <version>${project.parent.version}</version>
 
     <name>dependencyjob</name>
 

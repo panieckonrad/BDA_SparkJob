@@ -5,7 +5,7 @@
 
     <groupId>com.bda</groupId>
     <artifactId>SparkJobs</artifactId>
-    <version>0.2</version>
+    <version>0.3</version>
 
     <name>SparkJobs</name>
     <packaging>pom</packaging>
