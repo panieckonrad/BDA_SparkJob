@@ -1,10 +1,14 @@
 #COSMOSDB
 # create test CosmosDB account
-az cosmosdb create --name forextestdb --resource-group BigDataAcademyMay2021
+az cosmosdb create --name forextest --resource-group BigDataAcademyMay2021
+az cosmosdb create --name forexproduction --resource-group BigDataAcademyMay2021
+
 # create database for stream analytics inside CosmoDB account
-az cosmosdb sql database create --name asa --account-name forextestdb --resource-group BigDataAcademyMay2021
+az cosmosdb sql database create --name ForexDB --account-name forextest --resource-group BigDataAcademyMay2021
+az cosmosdb sql database create --name ForexDB --account-name forexproduction --resource-group BigDataAcademyMay2021
+
 # create container for stream analytics inside CosmoDB database
-az cosmosdb sql container create --account-name forextestdb --database-name asa --name output --partition-key-path /Instrument --resource-group BigDataAcademyMay2021
+az cosmosdb sql container create --account-name forextest --database-name ForexDB --name asa_output --partition-key-path /Instrument --resource-group BigDataAcademyMay2021
 # create container for stream analytics aggregated data inside CosmoDB database
 az cosmosdb sql container create --account-name forextestdb --database-name asa --name currencyExchangeRateOutput --partition-key-path /Instrument --resource-group BigDataAcademyMay2021
 
@@ -34,8 +38,32 @@ az keyvault secret set --vault-name BigDataVault --name forextestingEventHubEndp
 # create secret storing key for 'forexspark' storage account
 az keyvault secret set --vault-name BigDataVault --name forexSparkCheckpointContainerKey --value SECRET_VALUE
 
+#create secret for storing the key required to connect to ForexTesting
+az keyvault secret set --vault-name BigDataVault --name forexTestingKey --value SECRET_VALUE
+
+#create secret for storing the key required to connect to Forex
+az keyvault secret set --vault-name BigDataVault --name forexProdKey --value SECRET_VALUE
+
+
+az keyvault secret set --vault-name BigDataVault --name forexProdCosmoKey --value SECRET_VALUE
+
+az keyvault secret set --vault-name BigDataVault --name testStorageAccountKey --value SECRET_VALUE
+
+az keyvault secret set --vault-name BigDataVault --name prodStorageAccountKey --value SECRET_VALUE
+
+# create forexttesting event hub
+az eventhubs eventhub create --resource-group BigDataAcademyMay2021 --namespace-name bda2021 --name forextesting --message-retention 7 --partition-count 3
+
 #CONSUMER GROUPS IN EVENTHUB
-# create 'spark_processing_consumer_group' consumer group in the production eventhub
+# create consumer groups in the production eventhub
 az eventhubs eventhub consumer-group create --resource-group BigDataAcademyMay2021 --namespace-name bda2021 --eventhub-name forex --name spark_processing_consumer_group
-# create consumer group in the testing eventhub
+az eventhubs eventhub consumer-group create --resource-group BigDataAcademyMay2021 --namespace-name bda2021 --eventhub-name forex --name stream_analytics_cg
+
+# create consumer groups in the testing eventhub
 az eventhubs eventhub consumer-group create --resource-group BigDataAcademyMay2021 --namespace-name bda2021 --eventhub-name forextesting --name spark_forextesting_consumer_group
+az eventhubs eventhub consumer-group create --resource-group BigDataAcademyMay2021 --namespace-name bda2021 --eventhub-name forextesting --name stream_analytics_cg
+
+az eventhubs eventhub authorization-rule create --resource-group BigDataAcademyMay2021 --namespace-name bda2021 --name PreviewDataPolicy --rights Listen --eventhub-name forextesting
+az eventhubs eventhub authorization-rule create --resource-group BigDataAcademyMay2021 --namespace-name bda2021 --name PreviewDataPolicy --rights Listen --eventhub-name forex
+
+
