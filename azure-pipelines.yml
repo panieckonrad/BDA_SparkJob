@@ -1,7 +1,5 @@
-# Maven
-# Build your Java project and run tests with Apache Maven.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/java
+variables:
+  isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
 
 trigger:
   - main
@@ -9,56 +7,85 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-steps:
+jobs:
+- job: Test_code
+  steps:
+    - task: SonarQubePrepare@4
+      inputs:
+        SonarQube: 'sonardeveloper'
+        scannerMode: 'Other'
+        extraProperties: |
+          # Additional properties that will be passed to the scanner,
+          # Put one key=value per line, example:
+          # sonar.exclusions=**/*.bin
+          sonar.projectKey=BigDataAcademy_SparkJobs
 
-  - task: SonarQubePrepare@4
-    inputs:
-      SonarQube: 'sonardeveloper'
-      scannerMode: 'Other'
-      extraProperties: |
-        # Additional properties that will be passed to the scanner,
-        # Put one key=value per line, example:
-        # sonar.exclusions=**/*.bin
-        sonar.projectKey=BigDataAcademy_SparkJobs
+    - task: JavaToolInstaller@0
+      inputs:
+        versionSpec: '8'
+        jdkArchitectureOption: 'x64'
+        jdkSourceOption: 'PreInstalled'
+      displayName: 'Install Java 8'
 
-  - task: JavaToolInstaller@0
-    inputs:
-      versionSpec: '8'
-      jdkArchitectureOption: 'x64'
-      jdkSourceOption: 'PreInstalled'
-    displayName: 'Install Java 8'
+    - script: |
+        java -version
+        mvn -v
+      displayName: 'Show java and maven version'
 
-  - script: |
-      java -version
-      mvn -v
-    displayName: 'Show java and maven version'
+    - script: |
+        mvn validate --no-transfer-progress
+      displayName: 'Scalafmt formatting check'
 
-  - script: |
-      mvn validate --no-transfer-progress
-    displayName: 'Scalafmt formatting check'
+    # Main Maven task
+    - task: Maven@3
+      inputs:
+        mavenOptions: '-Xmx3072m'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.8'
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: true
+        testResultsFiles: '**/surefire-reports/TEST-*.xml'
+        goals: 'test --no-transfer-progress'
+      displayName: 'Unit tests (mvn test)'
 
-  # Main Maven task
+    # SonarQube Maven task
+    - task: Maven@3
+      inputs:
+        mavenVersionOption: 'Default'
+        mavenAuthenticateFeed: false
+        effectivePomSkip: false
+        sonarQubeRunAnalysis: true
+        sqMavenPluginVersionChoice: 'pom'
+      displayName: 'SonarQube (mvn sonar:sonar)'
+
+    - task: SonarQubePublish@4
+      inputs:
+        pollingTimeoutSec: '300'
+        
+- job: Publish_artifact
+  condition: eq(variables.isMain, true)
+  dependsOn: Test_code
+  steps:
   - task: Maven@3
     inputs:
-      mavenOptions: '-Xmx3072m'
+      mavenPomFile: 'MockDataProducer/pom.xml'
+      publishJUnitResults: false
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: '1.8'
-      jdkArchitectureOption: 'x64'
-      publishJUnitResults: true
-      testResultsFiles: '**/surefire-reports/TEST-*.xml'
-      goals: 'test --no-transfer-progress'
-    displayName: 'Unit tests (mvn test)'
-
-  # SonarQube Maven task
-  - task: Maven@3
-    inputs:
       mavenVersionOption: 'Default'
       mavenAuthenticateFeed: false
       effectivePomSkip: false
-      sonarQubeRunAnalysis: true
-      sqMavenPluginVersionChoice: 'pom'
-    displayName: 'SonarQube (mvn sonar:sonar)'
+      sonarQubeRunAnalysis: false
 
-  - task: SonarQubePublish@4
+  - script: ls MockDataProducer/target
+    displayName: "ls jar"
+
+  - task: CopyFiles@2
     inputs:
-      pollingTimeoutSec: '300'
+      sourceFolder: "MockDataProducer/target"
+      contents: 'MockDataProducer-*-jar-with-dependencies.jar'
+      targetFolder: "$(build.artifactstagingdirectory)"
+    displayName: "Copy Files to: $(build.artifactstagingdirectory)"
+
+  - publish: $(build.artifactstagingdirectory)
+    artifact: MDP
