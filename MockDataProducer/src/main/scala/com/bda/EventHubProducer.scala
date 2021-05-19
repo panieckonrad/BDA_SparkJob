@@ -1,6 +1,7 @@
 package com.bda
 
 import org.apache.kafka.clients.producer._
+import ujson.Value
 
 class EventHubProducer(val topicName: String) {
   var failed: Boolean = false
@@ -14,9 +15,8 @@ class EventHubProducer(val topicName: String) {
     }
   }
 
-  def publishMessages(getProducer: () => Producer[String, String], amount: Int = 1000, verbose: Boolean = false): Unit = {
+  def publishMessages(getProducer: () => Producer[String, String], messagesToSend: List[Value], verbose: Boolean = false): Unit = {
     val producer = getProducer()
-    val messagesToSend = ForexDataReader.readJson(amount)
 
     for (message <- messagesToSend) {
       if (verbose) {
