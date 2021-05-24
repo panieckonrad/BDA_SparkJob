@@ -184,6 +184,7 @@
         <module>dependencyjob</module>
         <module>forexToCosmo</module>
         <module>MockDataProducer</module>
+        <module>SellBuyDecision</module>
     </modules>
 
 </project>

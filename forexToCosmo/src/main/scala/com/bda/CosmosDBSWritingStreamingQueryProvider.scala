@@ -29,6 +29,5 @@ class CosmosDBSWritingStreamingQueryProvider(configuration: Config) extends Stre
       .options(readConfig)
       .outputMode("append")
       .start()
-
   }
 }
